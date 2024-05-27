@@ -1,0 +1,75 @@
+@startuml interaction
+actor User #orange
+participant Bot #lightgreen
+
+User -> Bot: /start
+Bot -> User: Roar! Welcome to Budgetosaurus Rex! I'm your friendly Budgetosaurus, here to help you manage your dino-dollars. What would you like to do today?
+Bot -> User: Possible options: "Track an Expense", "View budget", "Set savings goal", "Get financial tips", "Set or adjust budget", "Customize settings"</ul>
+alt User selects "Track an expense"
+    User -> Bot: Select "Track an expense"
+    Bot -> User: Please enter the amount spent.
+    User -> Bot: Enter amount
+    Bot -> User: What was this expense for? #select a category
+    User -> Bot: Enter description
+    Bot -> User: Expense recorded. Do you want to add more details or record another expense?
+    alt User selects "Add more details"
+        User -> Bot: Select "Add more details"
+        Bot -> User: Please provide any additional details (e.g., Store name, Payment method).
+        User -> Bot: Enter additional details
+        Bot -> User: Details added. Do you want to add another expense or go back to the main menu?
+    end
+end
+
+alt User selects "View budget"
+    User -> Bot: Select "View budget"
+    Bot -> User: Here's a summary of your current budget:
+    Bot -> User: Total budget: $1000, Spent: $450, Remaining: $550, Categories: Groceries: $150, Entertainment: $100, Bills: $200
+    alt User selects "View detailed breakdown"
+        User -> Bot: Select "View detailed breakdown"
+        Bot -> User: Here is your detailed budget breakdown by category:
+        Bot -> User: Groceries: $150, Entertainment: $100, Bills: $200, Miscellaneous: $50
+        User -> Bot: Select "Export report" (or "Main menu")
+    end
+end
+
+alt User selects "Set savings goal"
+    User -> Bot: Select "Set savings goal"
+    Bot -> User: What is your savings goal amount?
+    User -> Bot: Enter amount
+    Bot -> User: By when would you like to reach this goal? (e.g., 2024-12-31)
+    User -> Bot: Enter date
+    Bot -> User: Savings goal set. Do you want to set up automated reminders?
+    alt User selects "Yes"
+        User -> Bot: Select "Yes"
+        Bot -> User: How often would you like to receive reminders? (Daily, Weekly, Monthly)
+        User -> Bot: Select reminder frequency
+        Bot -> User: Reminders set.
+    end
+end
+
+alt User selects "Get financial tips"
+    User -> Bot: Select "Get financial tips"
+    Bot -> User: Here are some tips to help you save money and manage your finances better:
+    Bot -> User: Tip 1: "Track your expenses daily to stay aware of your spending habits."
+    Bot -> User: Tip 2: "Set a monthly budget and stick to it."
+    Bot -> User: Tip 3: "Save a portion of your income regularly, no matter how small."
+    User -> Bot: Select "More tips" (or "Main menu")
+end
+
+alt User selects "Set or adjust budget"
+    User -> Bot: Select "Set or adjust budget"
+    Bot -> User: Please enter the new total budget amount.
+    User -> Bot: Enter amount
+    Bot -> User: Total budget updated. Would you like to adjust category budgets as well?
+    User -> Bot: Select "Yes" (or "No")
+end
+
+alt User selects "Customize settings"
+    User -> Bot: Select "Customize settings"
+    Bot -> User: What would you like to customize?
+    User -> Bot: Select "Notification preferences" (or "Currency settings", "Expense categories")
+end
+
+User -> Bot: Select "Main menu"
+Bot -> User: What would you like to do next?
+@enduml
