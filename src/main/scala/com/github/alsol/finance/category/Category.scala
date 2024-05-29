@@ -9,15 +9,11 @@ enum CategoryType {
 
 type CategoryId = Int
 
-object CategoryId {
-  def apply(raw: Int): CategoryId = raw
-}
-
-case class Category(id: Int, title: String, kind: CategoryType, hidden: Boolean)
+case class Category(id: CategoryId, title: String, kind: CategoryType, hidden: Boolean)
 
 object Category {
 
-  def expense(id: Int, title: String): Category = Category(id, title, Expense, false)
+  def expense(id: CategoryId, title: String): Category = Category(id, title, Expense, false)
 
-  def income(id: Int, title: String): Category = Category(id, title, Income, false)
+  def income(id: CategoryId, title: String): Category = Category(id, title, Income, false)
 }
