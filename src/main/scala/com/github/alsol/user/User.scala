@@ -1,3 +1,9 @@
 package com.github.alsol.user
 
-case class User(id: Long, name: String)
+type UserId = Long
+
+object UserId {
+  def apply(raw: Long): UserId = raw
+}
+
+case class User(id: UserId, name: String)

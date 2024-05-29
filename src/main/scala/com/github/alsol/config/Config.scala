@@ -1,10 +1,10 @@
 package com.github.alsol.config
 
-import cats.effect.{IO, Temporal}
+import cats.effect.IO
 import cats.effect.kernel.Resource
 import org.typelevel.otel4s.trace.Tracer
-import pureconfig.{ConfigReader, ConfigSource}
 import pureconfig.generic.derivation.default.*
+import pureconfig.{ConfigReader, ConfigSource}
 import skunk.Session
 
 case class BotConfig(apiToken: String)

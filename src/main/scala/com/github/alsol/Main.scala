@@ -27,10 +27,9 @@ object Main extends IOApp {
 
     resources
       .use { case (config, logger, session, services) =>
-        import services.given
         for {
           _ <- Schema.migrate(using session, logger)
-          _ <- Telegram.run(config)(using logger)
+          _ <- Telegram.run(config)(using logger, services)
         } yield ()
       }
       .as(ExitCode.Success)
