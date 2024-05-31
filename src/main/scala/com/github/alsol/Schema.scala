@@ -1,12 +1,12 @@
-package com.github.alsol.migration
+package com.github.alsol
 
 import cats.effect.IO
 import cats.effect.kernel.Resource
+import cats.implicits.*
 import logstage.LogIO
 import skunk.implicits.sql
 import skunk.util.Origin
 import skunk.{Command, Session, Void}
-import cats.implicits._
 
 import scala.io.Source;
 

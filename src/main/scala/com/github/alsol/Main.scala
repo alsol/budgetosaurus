@@ -2,7 +2,6 @@ package com.github.alsol
 
 import cats.effect.{ExitCode, IO, IOApp}
 import com.github.alsol.config.Config
-import com.github.alsol.migration.Schema
 import izumi.logstage.api.IzLogger
 import logstage.LogIO
 import org.typelevel.otel4s.trace.Tracer

@@ -32,3 +32,4 @@ metals.sbt
 /.worksheet/
 
 src/main/resources/application.conf
+pyenv
