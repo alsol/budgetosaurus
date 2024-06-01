@@ -9,7 +9,7 @@ def generate_pie_chart(values, labels, output_file, balance, width, height):
                                  textfont=dict(size=24)
                                  )])
 
-    (btext, bcolor) = ('+ %d' % balance, 'green') if (balance > 0) else ('- %d' % balance, 'red')
+    (btext, bcolor) = ('+ %d' % balance, 'green') if (balance > 0) else ('- %d' % abs(balance), 'red')
 
     fig.update(layout_showlegend=False)
     fig.update_layout(

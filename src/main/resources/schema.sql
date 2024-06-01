@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS users
 (
-    id       BIGINT NOT NULL PRIMARY KEY,
-    username TEXT   NOT NULL NOT NULL UNIQUE
+    id            BIGINT NOT NULL PRIMARY KEY,
+    username      TEXT   NOT NULL NOT NULL UNIQUE,
+    currency_code TEXT   NOT NULL DEFAULT 'RUB'
 );
 
 CREATE TABLE IF NOT EXISTS category
@@ -15,6 +16,18 @@ CREATE TABLE IF NOT EXISTS category
 );
 
 CREATE TABLE IF NOT EXISTS expense
+(
+    id          BIGSERIAL,
+    user_id     BIGINT    NOT NULL REFERENCES users (id),
+    amount      DECIMAL   NOT NULL,
+    category    INT       NOT NULL,
+    description TEXT,
+    startpoint  TIMESTAMP NOT NULL DEFAULT now(),
+
+    PRIMARY KEY (user_id, id)
+);
+
+CREATE TABLE IF NOT EXISTS income
 (
     id          BIGSERIAL,
     user_id     BIGINT    NOT NULL REFERENCES users (id),

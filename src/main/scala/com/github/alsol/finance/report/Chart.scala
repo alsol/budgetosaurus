@@ -1,5 +1,9 @@
 package com.github.alsol.finance.report
 
+import cats.effect.IO
+import cats.effect.kernel.Resource
+
+import java.nio.file.{Files, Path}
 import java.util.UUID
 import scala.sys.process.*
 import scala.util.control.NoStackTrace
@@ -7,9 +11,9 @@ import scala.util.{Failure, Success, Try}
 
 type FilePath = String
 
-object Chart {
+private object Chart {
 
-  // Path to the Python interpreter in your virtual environment
+  // Path to the Python interpreter
   private val pythonPath = "./pyenv/bin/python"
   private val scriptPath = "./python/generate_pie_chart.py"
 
@@ -18,21 +22,20 @@ object Chart {
 
   private class ProcessFailedException extends NoStackTrace
 
-  def render(expenseData: Map[String, BigDecimal], summary: BigDecimal): Try[FilePath] = {
+  def render(expenseData: Map[String, BigDecimal], total: BigDecimal): Resource[IO, FilePath] = {
 
-    val values = expenseData.values.mkString("[", ",", "]")
-    val labels = expenseData.keys.mkString("[", ",", "]")
+    val values = expenseData.values.mkString("[", ";", "]")
+    val labels = expenseData.keys.mkString("[", ";", "]")
     val outputFile = s"${UUID.randomUUID()}.png"
 
     // Command to execute the Python script with arguments
-    val command = Seq(pythonPath, scriptPath, values, labels, outputFile, summary.toString, width.toString, height.toString)
+    val command = Seq(pythonPath, scriptPath, values, labels, outputFile, total.toString, width.toString, height.toString)
 
-    // Run the command
-    val exitCode = command.!
-
-    exitCode match {
-      case 0 => Success(outputFile)
-      case _ => Failure(new ProcessFailedException)
-    }
+    Resource.make(IO {
+      val exitCode = command.!
+      outputFile
+    })(file => IO {
+      Files.deleteIfExists(Path.of(file))
+    })
   }
 }
