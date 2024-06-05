@@ -1,9 +1,9 @@
 package com.github.alsol
 
-import canoe.api.{Bot, Scenario, TelegramClient, *}
+import canoe.api.*
 import cats.effect.IO
 import com.github.alsol.config.Config
-import com.github.alsol.scenarios.{Register, Report, TrackDirectExpense}
+import com.github.alsol.scenarios.{Register, Report, TrackTransaction}
 import fs2.Stream
 import logstage.LogIO
 
@@ -13,7 +13,7 @@ object Telegram {
     import services.given
     Stream
       .resource(TelegramClient[IO](config.bot.apiToken))
-      .flatMap { case given TelegramClient[IO] => Bot.polling[IO].follow(Register.run, TrackDirectExpense.run, Report.run) }
+      .flatMap { case given TelegramClient[IO] => Bot.polling[IO].follow(Register.run, TrackTransaction.run, Report.run) }
       .compile
       .drain
   }

@@ -4,7 +4,7 @@ import sys
 
 def generate_pie_chart(values, labels, output_file, balance, width, height):
     fig = go.Figure(data=[go.Pie(labels=labels, values=values,
-                                 textinfo='label+percent',
+                                 textinfo='label+value+percent',
                                  hole=.3,
                                  textfont=dict(size=24)
                                  )])

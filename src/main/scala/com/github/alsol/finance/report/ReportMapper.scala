@@ -13,10 +13,18 @@ private trait ReportMapper {
        SELECT
            category,
            SUM(amount)
-         FROM expense
+         FROM transaction
         WHERE user_id = $int8
           AND startpoint >= $date
+          AND type = 'expense'
         GROUP BY category
          """.query(int4 *: numeric)
 
+  lazy val summary: Query[(Long, LocalDate), BigDecimal] =
+    sql"""
+        SELECT SUM(CASE WHEN type = 'income' THEN amount ELSE (-1 * amount) END)
+          FROM transaction
+         WHERE user_id = $int8
+           AND startpoint >= $date
+       """.query(numeric)
 }

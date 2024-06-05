@@ -1,9 +1,9 @@
 package com.github.alsol.scenarios
 
 import canoe.api.*
-import canoe.models.{Chat, InputFile}
 import canoe.models.messages.TextMessage
-import canoe.models.outgoing.{PhotoContent, TextContent}
+import canoe.models.outgoing.PhotoContent
+import canoe.models.{Chat, InputFile}
 import canoe.syntax.*
 import cats.effect.IO
 import com.github.alsol.finance.report.{Report, ReportService}
@@ -47,7 +47,7 @@ object Report {
       sb.append("• ").append(category).append(": ").append(sum).append("₽\n")
     }
 
-    sb.append("\nTotal: ").append(report.total).append("₽\n")
+    sb.append("\nBalance: ").append(report.total).append("₽\n")
 
     sb.toString()
   }

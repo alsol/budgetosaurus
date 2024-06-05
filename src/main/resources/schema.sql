@@ -15,26 +15,17 @@ CREATE TABLE IF NOT EXISTS category
     PRIMARY KEY (user_id, id)
 );
 
-CREATE TABLE IF NOT EXISTS expense
+CREATE TABLE IF NOT EXISTS transaction
 (
     id          BIGSERIAL,
     user_id     BIGINT    NOT NULL REFERENCES users (id),
     amount      DECIMAL   NOT NULL,
     category    INT       NOT NULL,
     description TEXT,
+    type        TEXT      NOT NULL,
     startpoint  TIMESTAMP NOT NULL DEFAULT now(),
 
     PRIMARY KEY (user_id, id)
 );
 
-CREATE TABLE IF NOT EXISTS income
-(
-    id          BIGSERIAL,
-    user_id     BIGINT    NOT NULL REFERENCES users (id),
-    amount      DECIMAL   NOT NULL,
-    category    INT       NOT NULL,
-    description TEXT,
-    startpoint  TIMESTAMP NOT NULL DEFAULT now(),
-
-    PRIMARY KEY (user_id, id)
-);
+CREATE INDEX IF NOT EXISTS transaction_startpoint_user_id ON transaction USING brin (startpoint, user_id);
