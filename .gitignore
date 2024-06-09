@@ -31,5 +31,5 @@ metals.sbt
 .idea_modules
 /.worksheet/
 
-src/main/resources/application.conf
+.env
 pyenv

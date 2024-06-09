@@ -1,8 +1,8 @@
 package com.github.alsol.user
 
-import skunk.{Command, Query, Void}
 import skunk.codec.all.*
 import skunk.implicits.sql
+import skunk.{Command, Query}
 
 private trait UserMapper {
 

@@ -22,7 +22,7 @@ private trait ReportMapper {
 
   lazy val summary: Query[(Long, LocalDate), BigDecimal] =
     sql"""
-        SELECT SUM(CASE WHEN type = 'income' THEN amount ELSE (-1 * amount) END)
+        SELECT coalesce(SUM(CASE WHEN type = 'income' THEN amount ELSE (-1 * amount) END), 0)
           FROM transaction
          WHERE user_id = $int8
            AND startpoint >= $date

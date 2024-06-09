@@ -7,7 +7,6 @@ import java.nio.file.{Files, Path}
 import java.util.UUID
 import scala.sys.process.*
 import scala.util.control.NoStackTrace
-import scala.util.{Failure, Success, Try}
 
 type FilePath = String
 

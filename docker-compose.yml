@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+
+  bot:
+    image: alsol/budgetosaurus:0.1.0-SNAPSHOT
+    container_name: budgetosaurus
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 6432
+      API_TOKEN: ${API_TOKEN}
+
+  postgres:
+    image: postgres:14-alpine
+    expose:
+      - 6432
+    ports:
+      - "6432:6432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: budget
+      PGPORT: 6432

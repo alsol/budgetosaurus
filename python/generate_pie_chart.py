@@ -9,7 +9,7 @@ def generate_pie_chart(values, labels, output_file, balance, width, height):
                                  textfont=dict(size=24)
                                  )])
 
-    (btext, bcolor) = ('+ %d' % balance, 'green') if (balance > 0) else ('- %d' % abs(balance), 'red')
+    (btext, bcolor) = ('+ %d' % balance, 'green') if (balance >= 0) else ('- %d' % abs(balance), 'red')
 
     fig.update(layout_showlegend=False)
     fig.update_layout(
@@ -23,7 +23,7 @@ def generate_pie_chart(values, labels, output_file, balance, width, height):
 
 
 if __name__ == "__main__":
-    values = list(map(float, sys.argv[1].strip('[]').split(';')))
+    values = list(map(float, filter(lambda x: x, sys.argv[1].strip('[]').split(';'))))
     labels = sys.argv[2].strip('[]').split(';')
     output_file = sys.argv[3]
     balance = int(sys.argv[4])
