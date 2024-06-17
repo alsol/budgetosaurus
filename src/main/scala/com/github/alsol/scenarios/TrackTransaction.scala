@@ -44,7 +44,7 @@ object TrackTransaction {
       rpl <- Scenario.expect(text)
       ctg <- Scenario.eval(findCategoryByName(rpl, cts))
       _ <- Scenario.eval(storeTransaction(usr, ctg)(amnt, desc))
-      _ <- Scenario.eval(in.chat.send(s"Expense recorded: ${showBigDecimal.show(amnt)} on ${ctg.title}.", keyboard = Keyboard.Remove))
+      _ <- Scenario.eval(in.chat.send(s"$knd recorded: ${showBigDecimal.show(amnt)} on ${ctg.title}.", keyboard = Keyboard.Remove))
     } yield ()
   }
 

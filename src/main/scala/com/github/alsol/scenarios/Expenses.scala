@@ -8,12 +8,15 @@ import cats.Monad
 import cats.effect.IO
 import cats.syntax.all.*
 import com.github.alsol.finance.ReportRange
+import com.github.alsol.finance.ReportRange.Day
 import com.github.alsol.finance.category.{CategoryService, CategoryType}
 import com.github.alsol.finance.transaction.TransactionService
 import com.github.alsol.finance.transaction.TransactionType.Expense
 import com.github.alsol.user.{User, UserId}
 import fs2.Pipe
 import logstage.LogIO
+
+import java.time.LocalDate
 
 object Expenses {
 
@@ -56,8 +59,13 @@ object Expenses {
     categories <- categoryService.listCategories(userId, CategoryType.Expense)
     transactions <- transactionService.list(userId, Expense, range)
   } yield {
+    val rangeHint = range match {
+      case Day => "Today"
+      case r => s"the last $r"
+    }
+
     transactions match {
-      case Nil => s"You have no expenses for the last $range. Good job!"
+      case Nil => s"You have no expenses for $rangeHint. Good job!"
       case _ =>
         val categoriesById = categories
           .map(ctg => ctg.id -> ctg.title)
@@ -65,8 +73,10 @@ object Expenses {
 
         val collected = transactions
           .groupBy(_.date)
+          .toList
+          .sortBy(_._1)(Ordering[LocalDate].reverse)
 
-        s"Here is the list of your spending for the last $range:\n\n" + collected
+        s"Here is the list of your spending for $rangeHint:\n\n" + collected
           .map { (date, transactions) =>
             val block = transactions
               .map(t => s"   $dot ${categoriesById(t.categoryId)} ${t.amount.show}${if !t.description.isBlank then ": " + t.description else ""}")
