@@ -37,14 +37,14 @@ object TrackTransaction {
     for {
       in <- Scenario.expect(textMessage.matching(expensePattern.pattern.pattern()))
       _ <- Scenario.eval(LogIO[IO].info("Direct track scenario started"))
-      usr <- Scenario.eval(getUser(in))
+      usr <- Scenario.eval(in.getUser[IO])
       (knd, amnt, desc) <- Scenario.eval(IO.fromOption(parseTransaction(in.text))(new IllegalStateException("Mismatching message")))
       cts <- Scenario.eval(getCategories(usr, knd))
       kbd <- Scenario.eval(in.chat.send(s"Got it. What was this $knd for?", keyboard = Keyboard.Reply(categoryKeyboard(cts))))
       rpl <- Scenario.expect(text)
       ctg <- Scenario.eval(findCategoryByName(rpl, cts))
       _ <- Scenario.eval(storeTransaction(usr, ctg)(amnt, desc))
-      _ <- Scenario.eval(in.chat.send(s"Expense recorded: ${amnt}₽ on ${ctg.title}.", keyboard = Keyboard.Remove))
+      _ <- Scenario.eval(in.chat.send(s"Expense recorded: ${showBigDecimal.show(amnt)} on ${ctg.title}.", keyboard = Keyboard.Remove))
     } yield ()
   }
 

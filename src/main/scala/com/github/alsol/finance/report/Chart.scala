@@ -8,9 +8,10 @@ import java.util.UUID
 import scala.sys.process.*
 import scala.util.control.NoStackTrace
 
-type FilePath = String
 
 private object Chart {
+
+  private type FilePath = String
 
   // Path to the Python interpreter
   private val pythonPath = "./pyenv/bin/python"
@@ -18,8 +19,6 @@ private object Chart {
 
   private val width = 1024 // Set the desired width
   private val height = 1024 // Set the desired height
-
-  private class ProcessFailedException extends NoStackTrace
 
   def render(expenseData: Map[String, BigDecimal], total: BigDecimal): Resource[IO, FilePath] = {
 

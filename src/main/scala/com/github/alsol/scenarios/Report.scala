@@ -6,7 +6,7 @@ import canoe.models.outgoing.PhotoContent
 import canoe.models.{Chat, InputFile}
 import canoe.syntax.*
 import cats.effect.IO
-import com.github.alsol.finance.report.ReportRange.Month
+import com.github.alsol.finance.ReportRange.Month
 import com.github.alsol.finance.report.{Report, ReportService}
 import com.github.alsol.user.User
 import fs2.io.file.{Files, Path}
@@ -18,12 +18,11 @@ object Report {
     cmd <- Scenario.expect(command("report"))
     _ <- Scenario.eval(LogIO[IO].info("Report scenario started"))
     rpl <- Scenario.eval(cmd.chat.send("Calculating..."))
-    usr <- Scenario.eval(cmd.getUser)
+    usr <- Scenario.eval(cmd.getUser[IO])
     rpt <- Scenario.eval(getReport(usr))
     _ <- sendReport(cmd.chat, rpt)
     _ <- Scenario.eval(rpl.delete)
   } yield ()
-
 
   private def getReport(user: User)(using reportService: ReportService) = reportService.createReport(user.id, Month)
 
@@ -44,11 +43,11 @@ object Report {
       case _ => for {
         (category, sum) <- report.expenseData.toList.sortBy(_._2)(Ordering[BigDecimal].reverse)
       } {
-        sb.append("• ").append(category).append(": ").append(sum).append("₽\n")
+        sb.append("• ").append(category).append(": ").append(showBigDecimal.show(sum)).append("\n")
       }
     }
 
-    sb.append("\nBalance: ").append(report.total).append("₽\n")
+    sb.append(s"\nBalance: ${showBigDecimal.show(report.total)}")
 
     sb.toString()
   }

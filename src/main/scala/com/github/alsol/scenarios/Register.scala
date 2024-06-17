@@ -12,7 +12,7 @@ object Register {
   def run(using TelegramClient[IO], LogIO[IO], UserService): Scenario[IO, Unit] = for {
     msg <- Scenario.expect(command("start"))
     _ <- Scenario.eval(LogIO[IO].info("Register scenario started"))
-    user <- Scenario.eval(getUser(msg))
+    user <- Scenario.eval(msg.getUser[IO])
     response <- Scenario.eval(maybeRegister(user))
     _ <- Scenario.eval(msg.chat.send(response))
   } yield ()

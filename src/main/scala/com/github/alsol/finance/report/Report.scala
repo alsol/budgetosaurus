@@ -1,16 +1,11 @@
 package com.github.alsol.finance.report
 
 import cats.effect.{IO, Resource}
-
-enum ReportRange {
-  case Day
-  case Week
-  case Month
-}
+import com.github.alsol.finance
 
 case class Report(
   expenseData: Map[String, BigDecimal],
   total: BigDecimal,
-  range: ReportRange,
+  range: finance.ReportRange,
   chart: Resource[IO, String]
 )
