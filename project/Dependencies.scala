@@ -9,8 +9,9 @@ object Dependencies {
     val logstage = "1.2.8"
     val canoe = "0.6.0"
     val skunk = "1.1.0-M3"
-    val munit = "1.0.0"
     val sl4j = "2.0.13"
+    val scalatest = "3.2.18"
+    val testcontainers = "1.16.0"
   }
 
   val distage = Seq(
@@ -19,16 +20,20 @@ object Dependencies {
   )
 
   val misc = Seq(
-    "org.augustjune"        %% "canoe"            % Versions.canoe,
-    "org.tpolecat"          %% "skunk-core"       % Versions.skunk,
-    "org.typelevel"         %% "cats-effect"      % Versions.catsEffect,
-    "org.typelevel"         %% "cats-core"        % Versions.cats,
-    "com.github.pureconfig" %% "pureconfig-core"  % Versions.pureconfig
+    "org.augustjune" %% "canoe" % Versions.canoe,
+    "org.tpolecat" %% "skunk-core" % Versions.skunk,
+    "org.typelevel" %% "cats-effect" % Versions.catsEffect,
+    "org.typelevel" %% "cats-core" % Versions.cats,
+    "com.github.pureconfig" %% "pureconfig-core" % Versions.pureconfig
   )
 
   val test = Seq(
-    "org.scalameta" %% "munit" % Versions.munit % Test
-  )
+    "org.scalatest" %% "scalatest" % Versions.scalatest,
+    "org.scalatestplus" %% "mockito-5-10" % s"${Versions.scalatest}.0",
+    "org.typelevel" %% "cats-effect-testing-scalatest" % "1.4.0",
+    "org.testcontainers" % "postgresql" % Versions.testcontainers,
+    "org.testcontainers" % "testcontainers" % Versions.testcontainers
+  ).map(_ % Test)
 
   val all = misc ++ distage ++ test
 }

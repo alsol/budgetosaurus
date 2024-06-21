@@ -10,6 +10,7 @@ private trait UserMapper {
     sql"""
       INSERT INTO users (id, username)
       VALUES ($int8, $text)
+      ON CONFLICT (id) DO NOTHING
        """.command
 
   lazy val findUser: Query[Long, User] =

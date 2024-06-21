@@ -14,7 +14,7 @@ To run application locally:
 export API_TOKEN=<your tg bot api token> \
    && sbt run
 ```
-But you can also use the docker-compose:
+You can also bootstrap application via docker-compose:
 ```shell
 sbt docker:publishLocal && docker-compose up -e API_TOKEN=<your tg bot api token>
 ```

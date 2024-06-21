@@ -5,15 +5,14 @@ import cats.data.OptionT
 import cats.{Monad, Show}
 import com.github.alsol.user.User
 
-import java.text.{DecimalFormat, NumberFormat}
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 package object scenarios {
 
   private lazy val dateFormat = DateTimeFormatter.ofPattern("dd-MM-YYYY")
-  
+
   private lazy val decimalFormat = new DecimalFormat("#,###")
 
   private val dot = "• "
