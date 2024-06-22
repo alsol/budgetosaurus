@@ -1,14 +1,16 @@
-# Budgetosaurus Telegram Bot
+# Budgetosaurus Rex Telegram Bot
 
-![No, it's not the real logo btw](images/logo.png)
+![No, it's not the real logo lol](images/logo.png)
 
-## Overview
+## 🦖 Overview
 
 Budgetosaurus Rex is a Telegram bot for personal finance management.  
-This bot is designed to help you keep track of your finances in a fun and easy way.
+This bot is designed to help you keep track of your finances in a fun and easy way.  
 Built with Scala 3, the Canoe library, and PostgreSQL, Budgetosaurus is here to make managing your money less of a chore and more of a roar!
 
-## What Budgetosaurus Can Do
+**Live URL**: [@BudgetosaurusBot](https://t.me/BudgetosaurusBot)
+
+## 💬 Commands and Scenarios
 
 Bot supports the following inputs:
 - **/start**: Say hello and register yourself.
@@ -16,8 +18,6 @@ Bot supports the following inputs:
 - **/tips**: Get a random tip to help you manage your money better.
 - **/expenses**: See a list of your expenses over a chosen period (Day, Week, Month).
 - **/report**: Get a pie chart summary of your expenses and income for a chosen period (Day, Week, Month).
-
-## Commands and Scenarios
 
 ### /start - Register User
 
@@ -80,23 +80,22 @@ sequenceDiagram
 ```
 
 
-## Local setup
+## ▶️ Running it Locally
 You need to install the required middleware first:
 ```shell
 python3 -m venv ./pyenv \ 
   && source ./pyenv/bin/activate \
   && pip3 install -r ./python/requirements.txt
 ```
-Make sure you have the postgres instance running on your device.  
-To run application locally:
+Make sure you have the postgres instance running on your device, then run the following command:
 ```shell
 export API_TOKEN=<your tg bot api token> \
    && sbt run
 ```
-You can also bootstrap application via docker-compose:
+The easy way is to start all-in-one using [docker-compose](https://docs.docker.com/compose/):
 ```shell
 sbt docker:publishLocal && docker-compose up -e API_TOKEN=<your tg bot api token>
 ```
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+## 👩‍💼 License
+This project is licensed under the [Apache 2.0 License](LICENSE)
