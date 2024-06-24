@@ -9,7 +9,7 @@ This bot is designed to help you keep track of your finances in a fun and easy w
 
 ## 💬 Commands and Scenarios
 
-Bot supports the following inputs:
+Bot supports the following commands:
 - **/start**: Say hello and register yourself.
 - **{amount} {description}**: Log a transaction, whether it's money spent or earned.
 - **/tips**: Get a random tip to help you manage your money better.
