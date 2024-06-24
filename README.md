@@ -6,9 +6,6 @@
 
 Budgetosaurus Rex is a Telegram bot for personal finance management.  
 This bot is designed to help you keep track of your finances in a fun and easy way.  
-Built with Scala 3, the Canoe library, and PostgreSQL, Budgetosaurus is here to make managing your money less of a chore and more of a roar!
-
-**Live URL**: [@BudgetosaurusBot](https://t.me/BudgetosaurusBot)
 
 ## 💬 Commands and Scenarios
 

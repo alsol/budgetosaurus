@@ -11,11 +11,13 @@ import logstage.LogIO
 class ExpensesSpec extends ScenarioSpec {
 
   "great user and suggest to chose the range" in context { (logger, session, services, telegram, ref) =>
+    import services.given
+
     given tg: TelegramClient[IO] = telegram
 
     given log: LogIO[IO] = logger
 
-    val scenario = Expenses.run[IO]
+    val scenario = Expenses.init.run[IO]
 
     for {
       res <- messages("/expenses").through(scenario.pipe).compile.toList
@@ -33,7 +35,7 @@ class ExpensesSpec extends ScenarioSpec {
 
       given log: LogIO[IO] = logger
 
-      val scenario = Expenses.answerCallbacks
+      val scenario = Expenses.init.answerCallbacks
 
       for {
         _ <- createUser
@@ -53,7 +55,7 @@ class ExpensesSpec extends ScenarioSpec {
 
     given log: LogIO[IO] = logger
 
-    val scenario = Expenses.answerCallbacks
+    val scenario = Expenses.init.answerCallbacks
 
     for {
       res <- callback("something::unknown").through(scenario).compile.toList
