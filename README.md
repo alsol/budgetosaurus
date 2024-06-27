@@ -86,12 +86,16 @@ python3 -m venv ./pyenv \
 ```
 Make sure you have the postgres instance running on your device, then run the following command:
 ```shell
-export API_TOKEN=<your tg bot api token> \
-   && sbt run
+export API_TOKEN=<your tg bot api token>
+export DB_USER=<your db user name>
+export DB_PASSWORD=<your db user pass>
+sbt run
 ```
 The easy way is to start all-in-one using [docker-compose](https://docs.docker.com/compose/):
 ```shell
 export API_TOKEN=<your api token>
+export DB_USER=<your db user name>
+export DB_PASSWORD=<your db user pass>
 sbt docker:publishLocal && docker-compose up
 ```
 

@@ -11,6 +11,9 @@ services:
     environment:
       DB_HOST: postgres
       DB_PORT: 6432
+      DB_NAME: budget
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       API_TOKEN: ${API_TOKEN}
 
   postgres:
@@ -20,7 +23,7 @@ services:
     ports:
       - "6432:6432"
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: budget
       PGPORT: 6432
