@@ -6,7 +6,6 @@ import cats.effect.kernel.Resource
 import java.nio.file.{Files, Path}
 import java.util.UUID
 import scala.sys.process.*
-import scala.util.control.NoStackTrace
 
 
 private object Chart {

@@ -8,8 +8,6 @@ import cats.Monad
 import cats.effect.IO
 import cats.syntax.all.*
 import com.github.alsol.finance.ReportRange
-import com.github.alsol.finance.category.CategoryService
-import com.github.alsol.finance.transaction.TransactionService
 import com.github.alsol.scenarios.api.RangedScenario.CallbackData
 import com.github.alsol.scenarios.getUser
 import com.github.alsol.user.{User, UserId}
@@ -27,7 +25,7 @@ trait RangedScenario(command: String) {
 
   def run[F[_] : Monad : TelegramClient : LogIO]: Scenario[F, Unit] = for {
     msg <- Scenario.expect(canoe.syntax.command(command))
-    _ <- Scenario.eval(LogIO[F].debug(s"${command} scenario started"))
+    _ <- Scenario.eval(LogIO[F].debug(s"$command scenario started"))
     user <- Scenario.eval(getUser(msg))
     _ <- Scenario.eval(msg.chat.send(content = "Roar! Please specify the range to show", keyboard = callbackKeyboard(user)))
   } yield ()

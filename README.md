@@ -91,7 +91,8 @@ export API_TOKEN=<your tg bot api token> \
 ```
 The easy way is to start all-in-one using [docker-compose](https://docs.docker.com/compose/):
 ```shell
-sbt docker:publishLocal && docker-compose up -e API_TOKEN=<your tg bot api token>
+export API_TOKEN=<your api token>
+sbt docker:publishLocal && docker-compose up
 ```
 
 ## 👩‍💼 License

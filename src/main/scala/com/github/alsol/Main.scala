@@ -29,6 +29,7 @@ object Main extends IOApp {
         for {
           _ <- Schema.migrate(using session, logger)
           _ <- Telegram.run(config)(using logger, services)
+          _ <- logger.info("Shutting down application")
         } yield ()
       }
       .as(ExitCode.Success)

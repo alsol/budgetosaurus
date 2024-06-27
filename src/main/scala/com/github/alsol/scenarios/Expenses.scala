@@ -1,10 +1,7 @@
 package com.github.alsol.scenarios
 
-import canoe.api.models.Keyboard
 import canoe.api.{Scenario, TelegramClient, *}
 import canoe.models.*
-import canoe.syntax.*
-import cats.Monad
 import cats.effect.IO
 import cats.syntax.all.*
 import com.github.alsol.finance.ReportRange
@@ -14,8 +11,6 @@ import com.github.alsol.finance.transaction.TransactionService
 import com.github.alsol.finance.transaction.TransactionType.Expense
 import com.github.alsol.scenarios.api.RangedScenario
 import com.github.alsol.user.UserId
-import fs2.Pipe
-import logstage.LogIO
 
 import java.time.LocalDate
 

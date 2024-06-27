@@ -1,18 +1,14 @@
 package com.github.alsol.scenarios
 
 import canoe.api.*
-import canoe.models.messages.TextMessage
 import canoe.models.outgoing.PhotoContent
 import canoe.models.{CallbackQuery, Chat, InputFile}
-import canoe.syntax.*
 import cats.effect.IO
-import com.github.alsol.finance.{ReportRange, report}
-import com.github.alsol.finance.ReportRange.Month
 import com.github.alsol.finance.report.{Report, ReportService}
+import com.github.alsol.finance.{ReportRange, report}
 import com.github.alsol.scenarios.api.RangedScenario
 import com.github.alsol.user.UserId
 import fs2.io.file.{Files, Path}
-import logstage.LogIO
 
 class Report(using reportService: ReportService) extends RangedScenario("report") {
 
