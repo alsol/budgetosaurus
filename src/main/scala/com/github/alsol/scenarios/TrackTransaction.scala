@@ -23,6 +23,7 @@ object TrackTransaction {
       in <- Scenario.expect(textMessage.matching(expensePattern.pattern.pattern()))
       _ <- Scenario.eval(LogIO[IO].info("Direct track scenario started"))
       usr <- Scenario.eval(in.getUser[IO])
+      _ <- Scenario.eval(createUserIfMissing(usr))
       (knd, amnt, desc) <- Scenario.eval(IO.fromOption(parseTransaction(in.text))(new IllegalStateException("Mismatching message")))
       cts <- Scenario.eval(getCategories(usr, knd))
       kbd <- Scenario.eval(in.chat.send(s"Got it. What was this $knd for?", keyboard = Keyboard.Reply(categoryKeyboard(cts))))
