@@ -10,7 +10,7 @@ import skunk.Session
 class TransactionServiceSupport(using s: Session[IO], l: LogIO[IO]) extends TransactionService with TransactionMapper {
 
   override def track(userId: UserId, categoryId: CategoryId, kind: TransactionType, amount: BigDecimal, description: String): IO[Unit] = for {
-    _ <- l.debug(s"Storing transaction for user $userId (category: $categoryId, type: $kind")
+    _ <- l.debug(s"Storing transaction for user $userId (category: $categoryId, type: $kind)")
     _ <- s.execute(insertTransaction)(userId, amount, toDbString(kind), categoryId, description)
   } yield ()
 

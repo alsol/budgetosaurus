@@ -9,15 +9,24 @@ import com.github.alsol.finance.{ReportRange, report}
 import com.github.alsol.scenarios.api.RangedScenario
 import com.github.alsol.user.UserId
 import fs2.io.file.{Files, Path}
+import logstage.LogIO
 
-class Report(using reportService: ReportService) extends RangedScenario("report") {
+class Report(using reportService: ReportService, logIO: LogIO[IO]) extends RangedScenario("report") {
 
   override def callback(query: CallbackQuery, userId: UserId, range: ReportRange)(using TelegramClient[IO]): IO[Unit] = for {
     rpl <- IO.fromOption(query.message)(new IllegalStateException("Message not found"))
     _ <- rpl.editText("Calculating...")
-    rpt <- getReport(userId, range)
-    _ <- sendReport(rpl.chat, rpt)
-    _ <- rpl.delete
+    result <- getReport(userId, range).attempt
+    _ <- result.fold(
+      e => for {
+        _ <- logIO.error(s"An error received during report rendering: ${e}")
+        _ <- rpl.editText("Failed to receive a report, please try again")
+      } yield (),
+      rpt => for {
+        _ <- sendReport(rpl.chat, rpt)
+        _ <- rpl.delete
+      } yield ()
+    )
     _ <- query.finish
   } yield ()
 
@@ -59,6 +68,6 @@ class Report(using reportService: ReportService) extends RangedScenario("report"
 
 object Report {
 
-  def init(using ReportService) = new Report
+  def init(using ReportService, LogIO[IO]) = new Report
 
 }

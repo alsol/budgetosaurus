@@ -11,16 +11,23 @@ import com.github.alsol.finance.transaction.TransactionService
 import com.github.alsol.finance.transaction.TransactionType.Expense
 import com.github.alsol.scenarios.api.RangedScenario
 import com.github.alsol.user.UserId
+import logstage.LogIO
 
 import java.time.LocalDate
 
-class Expenses(using transactionService: TransactionService, categoryService: CategoryService) extends RangedScenario("expenses") {
+class Expenses(using transactionService: TransactionService, categoryService: CategoryService, log: LogIO[IO]) extends RangedScenario("expenses") {
 
   override def callback(query: CallbackQuery, userId: UserId, range: ReportRange)(using telegramClient: TelegramClient[IO]): IO[Unit] = for {
     rpl <- IO.fromOption(query.message)(new IllegalStateException("Message not found"))
     _ <- rpl.editText("Checking my dino-archives...")
-    msg <- prepareMessage(userId, range)
-    _ <- rpl.editText(msg)
+    result <- prepareMessage(userId, range).attempt
+    _ <- result.fold(
+      e => for {
+        _ <- log.error(s"Failed to fetch a list of expense $e")
+        _ <- rpl.editText("I can't find anything right now. Please try again later")
+      } yield (),
+      msg => rpl.editText(msg)
+    )
     _ <- query.finish
   } yield ()
 
@@ -60,6 +67,6 @@ class Expenses(using transactionService: TransactionService, categoryService: Ca
 
 object Expenses {
 
-  def init(using TransactionService, CategoryService): Expenses = new Expenses()
+  def init(using TransactionService, CategoryService, LogIO[IO]): Expenses = new Expenses()
 
 }

@@ -22,10 +22,13 @@ object Telegram {
 
           expenses.stream zip report.stream zip
             Bot.polling[IO]
-              .follow(Register.run, TrackTransaction.run, Tips.run)
+              .follow(errorProne(Register.run), errorProne(TrackTransaction.run), Tips.run, Fallback.run)
         case _ => Stream.eval(logIO.info("\uD83E\uDD96 Telegram bot stream started"))
       }
       .compile
       .drain
   }
+
+  private def errorProne(s: Scenario[IO, Unit])(using logIO: LogIO[IO]): Scenario[IO, Unit] =
+    s.handleErrorWith(e => Scenario.eval(logIO.error(s"Something went wrong: $e")))
 }

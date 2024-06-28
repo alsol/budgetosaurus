@@ -9,31 +9,16 @@ import com.github.alsol.finance.category.CategoryType.Expense
 import com.github.alsol.finance.category.{Category, CategoryService, CategoryType}
 import com.github.alsol.finance.transaction.TransactionType.Income
 import com.github.alsol.finance.transaction.{TransactionService, TransactionType}
-import com.github.alsol.user.User
+import com.github.alsol.user.{User, UserService}
 import logstage.LogIO
 
 import scala.util.matching.Regex
 
 object TrackTransaction {
 
-  def run(using TelegramClient[IO], LogIO[IO], CategoryService, TransactionService): Scenario[IO, Unit] = {
-    val expensePattern: Regex = "(.*?)?([+\\-])?(\\d+)(.*)?".r
+  private val expensePattern: Regex = "(.*?)?([+\\-])?\\s?(\\d+)(.*)?".r
 
-    def parseTransaction(str: String): Option[(TransactionType, BigDecimal, String)] = str match {
-      case expensePattern(prefix, sign, amount, suffix) =>
-        val kind = sign match {
-          case "+" => TransactionType.Income
-          case _ => TransactionType.Expense
-        }
-
-        if (prefix.isBlank) {
-          Some(kind, BigDecimal(amount), suffix.trim)
-        } else {
-          Some(kind, BigDecimal(amount), prefix.trim)
-        }
-      case _ => None
-    }
-
+  def run(using TelegramClient[IO], LogIO[IO], UserService, CategoryService, TransactionService): Scenario[IO, Unit] = {
     for {
       in <- Scenario.expect(textMessage.matching(expensePattern.pattern.pattern()))
       _ <- Scenario.eval(LogIO[IO].info("Direct track scenario started"))
@@ -46,6 +31,23 @@ object TrackTransaction {
       _ <- Scenario.eval(storeTransaction(usr, ctg)(amnt, desc))
       _ <- Scenario.eval(in.chat.send(s"$knd recorded: ${showBigDecimal.show(amnt)} on ${ctg.title}.", keyboard = Keyboard.Remove))
     } yield ()
+  }
+
+  private def createUserIfMissing(user: User)(using userService: UserService): IO[Unit] = userService.create(user)
+
+  private def parseTransaction(str: String): Option[(TransactionType, BigDecimal, String)] = str match {
+    case expensePattern(prefix, sign, amount, suffix) =>
+      val kind = sign match {
+        case "+" => TransactionType.Income
+        case _ => TransactionType.Expense
+      }
+
+      if (prefix.isBlank) {
+        Some(kind, BigDecimal(amount), suffix.trim)
+      } else {
+        Some(kind, BigDecimal(amount), prefix.trim)
+      }
+    case _ => None
   }
 
   private def getCategories(usr: User, kind: TransactionType)(using categoryService: CategoryService): IO[List[Category]] = {
